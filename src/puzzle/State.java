@@ -15,16 +15,24 @@ class State {
     private int h;
     private int g;
     private int f;
-    private int emptyPlacei;
-    private int emptyPlacej;
+    private MatrixPosition emptyPlacePosition;
+    private MatrixPosition parentEmptyPlacePosition;
 
-    public State(int[][] puzzleState, int h, int g, int f, int emptyPlacei, int emptyPlacej) {
+    public State(int[][] puzzleState, int h, int g, int f, MatrixPosition emptyPlacePosition, MatrixPosition parentEmptyPlacePosition) {
         this.puzzleState = puzzleState;
         this.h = h;
         this.g = g;
         this.f = f;
-        this.emptyPlacei = emptyPlacei;
-        this.emptyPlacej = emptyPlacej;
+        this.emptyPlacePosition = emptyPlacePosition;
+        this.parentEmptyPlacePosition = parentEmptyPlacePosition;
+    }
+
+    public MatrixPosition getParentEmptyPlacePosition() {
+        return parentEmptyPlacePosition;
+    }
+
+    public void setParentEmptyPlacePosition(MatrixPosition parentEmptyPlacePosition) {
+        this.parentEmptyPlacePosition = parentEmptyPlacePosition;
     }
 
     public int[][] getPuzzleState() {
@@ -59,19 +67,11 @@ class State {
         this.f = f;
     }
 
-    public int getEmptyPlacei() {
-        return emptyPlacei;
+    public MatrixPosition getemptyPlacePosition() {
+        return emptyPlacePosition;
     }
 
-    public void setEmptyPlacei(int emptyPlacei) {
-        this.emptyPlacei = emptyPlacei;
-    }
-
-    public int getEmptyPlacej() {
-        return emptyPlacej;
-    }
-
-    public void setEmptyPlacej(int emptyPlacej) {
-        this.emptyPlacej = emptyPlacej;
+    public void setemptyPlacePosition(MatrixPosition emptyPlacePosition) {
+        this.emptyPlacePosition = emptyPlacePosition;
     }
 }
