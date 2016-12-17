@@ -8,6 +8,7 @@ package puzzle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -20,10 +21,15 @@ public class Puzzle {
      */
     private static State startState;
     private static int[][] target;
+    private static Scanner scanner;
 
     public static void main(String[] args) {
-        initializeTargetState();
-        initializeStartState();
+        scanner = new Scanner(System.in);
+        System.out.println("Enter matrix size:");
+        int size = scanner.nextInt();
+        scanner.nextLine();
+        initializeTargetState(size);
+        initializeStartState(size);
         findSolutionUsingAStar();
 
     }
@@ -45,6 +51,7 @@ public class Puzzle {
             //push chldren in q
             if (calculateManhattanDist(state.getPuzzleState(), target) == 0) {
                 //we reach target
+                //System.out.println("f = " + state.getF());
                 System.out.println("solution found");
                 return;
             } else {
@@ -58,7 +65,7 @@ public class Puzzle {
 
                 MatrixPosition parentPosition = state.getParentEmptyPlacePosition();
 
-                //System.out.println("Children");
+                System.out.println("Children");
                 if (emptyPlacei + 1 < matrixColumns && (emptyPlacei + 1 != parentPosition.getI())) {
                     MatrixPosition newEmptyPlacePosition = new MatrixPosition(emptyPlacei + 1, emptyPlacej);
                     queue.add(createNewState(state, newEmptyPlacePosition));
@@ -78,28 +85,50 @@ public class Puzzle {
             }
 
             //sort queue
+            Collections.reverse(queue);
             Collections.sort(queue, new StatesComparator());
         }
     }
 
-    static void initializeTargetState() {
+    static void initializeTargetState(int size) {
 
         //the empty place is represented using 0
-        target = new int[][]{
+        /*target = new int[][]{
             {1, 2, 3, 4},
             {5, 6, 7, 8},
             {9, 10, 11, 12},
             {13, 14, 15, 0}
-        };
+        };*/
+        target = new int[size][size];
+        int counter = 1;
+        for(int i = 0; i < size; i++) {
+            for(int j = 0; j < size; j++) {
+                target[i][j] = counter;
+                counter+= 1;
+            }
+        }
+        target[size-1][size-1] = 0;
     }
 
-    static void initializeStartState() {
-        int[][] start = new int[][]{
-            {1, 2, 3, 4},
-            {5, 6, 7, 8},
-            {9, 10, 11, 12},
-            {0, 14, 15, 13}
-        };
+    static void initializeStartState(int size) {
+        /*int[][] start = new int[][]{
+            {11, 0, 6, 3},
+            {10, 1, 14, 7},
+            {8, 4, 15, 5},
+            {2, 13, 9, 12}
+        };*/
+        
+        int[][] start = new int[size][size];
+        
+        System.out.println("Enter Empty place as 0");
+        for(int i = 0; i < size; i++) {
+            System.out.println("Enter row elements:");
+            String sc = scanner.nextLine();
+            String[] s = sc.split("\\s+");
+            for(int j = 0; j < size; j++) {
+                start[i][j] = Integer.parseInt(s[j].trim());
+            }
+        }
 
         int h = calculateManhattanDist(start, target);
         int g = 0;
